@@ -1,0 +1,270 @@
+:root {
+    --font: "Open Sans", sans-serif;
+    --colorText: #4a4a49;
+    --colorWhite: #fff;
+    --colorClaus: #831b1c;
+    --colorVerdeClaus: #5da179;
+  }
+
+a,div,p,h1,h2,h3,small,input,textarea,button{
+    font-family: var(--font);
+}
+
+a{
+    text-decoration: none;
+}
+
+h1,h2,h3{
+    color: var(--colorText);
+}
+
+body{
+    margin: 0px;
+    background-image: url('../img/bg-fondo.png');
+    background-repeat: repeat-x;
+    background-position: 0 0;
+    background-color: var(--colorClaus);
+}  
+
+.perfilAbierto{
+    display: flex;
+}
+.perfilCerrado{
+    display: none !important;
+}  
+
+.itemsAbierto{
+    display: flex;
+}
+
+.itemsCerrado{
+    display: none;
+}
+
+header{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    flex-direction: row-reverse;
+    align-content: center;
+    align-items: center;
+    padding: 0px 20px;
+    box-sizing: border-box;
+}
+
+header div a{
+    margin-left: 7px;
+    color: var(--colorWhite);
+    font-weight: 600;
+    text-shadow: 2px 1px 3px black;
+}
+
+header #perfil{
+    font-family: var(--font);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+header #perfil p{
+    margin-left: 7px;
+    color: var(--colorWhite);
+    font-weight: 600;
+    text-shadow: 2px 1px 3px black;
+    margin: 0 7px;
+}
+
+header #perfil button{
+    height: 30px;
+    background-color: var(--colorVerdeClaus);
+    border: 2px solid #fff;
+    color: var(--colorWhite);
+}
+
+.containt-santa{
+    max-width: 700px;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    height: 428px;
+    box-sizing: border-box;
+}
+
+.containt-santa .img-santa{
+    width: 420px;
+}
+
+.containt-santa h1{
+    margin: -145px auto 0px;
+    font-size: 28px;
+    width: 324px;
+    color: var(--colorWhite);
+    font-weight: 500;
+    line-height: 34px;
+}
+
+.containt-santa p{
+    font-size: 16px;
+    color: var(--colorWhite);
+}
+
+.container{
+    margin:50px auto;
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: space-around;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.text {
+    font-family: var(--font);
+}
+
+#create-message h2{
+    margin:0px
+}
+
+#create-message{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: space-between;
+    justify-content: center;
+    align-items: center;
+    max-width: 520px;
+    width: 100%;
+    background-color: #fff;
+    padding: 30px 0px;
+    border: 3px dashed var(--colorVerdeClaus);
+}
+
+.container input{
+    border: 1px solid #d1d1d1;
+    border-radius: 4px;
+    height: 25px;
+    max-width: 270px;
+    width: 100%;
+    margin-top:12px;
+    margin-bottom: 12px;
+    font-family: var(--font);
+}
+.container textarea{
+    border-radius: 4px;
+    height: 70px;
+    max-width: 270px;
+    width: 100%;
+    border: 1px solid #d1d1d1;
+    margin-bottom: 20px;
+}
+.container button{
+    background-color: var(--colorClaus);
+    border-radius: 4px;
+    color: #fff;
+    border: none;
+    height: 30px;
+    width:120px;
+    font-family: var(--font);
+}
+
+.container h2{
+    color: var(--colorVerdeClaus)
+}
+
+.menssageChat{
+    width: 900px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: space-around;
+    justify-content: center;
+    align-items: stretch;
+    padding: 0 0 50px;
+}
+
+.menssageChat .viewPost{
+    margin: 4px 4px;
+    padding: 7px;
+    background-color: var(--colorWhite);
+    border-radius: 6px;
+    max-width: 440px;
+    border: 2px solid var(--colorVerdeClaus);
+}
+
+.menssageChat .viewPost h3{
+    margin:7px 0px;
+    font-size: 16px;
+}
+
+.menssageChat .viewPost p{
+    margin: 7px 0 10px;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--colorClaus);
+}
+
+.overlay{
+    background-color: #00000060;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top:0;
+    left: 0;
+    z-index: 2;
+}
+
+.content-registerForm{
+    position: absolute;
+    width: 400px;
+    left: 25%;
+    right: 25%;
+    z-index: 5;
+    top: 25%;
+}
+
+.content-loginForm{
+    position: absolute;
+    width: 400px;
+    left: 25%;
+    right: 25%;
+    z-index: 5;
+    top: 25%;
+}
+
+#register-form{
+    display: block;
+    background: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+#register-form a{
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+#login-form{
+    display: block;
+    background: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+#login-form a{
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.d-none{
+    display: none !important;
+}
+
+.d-block{
+    display: block !important;
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Tu carta para Navidad</title>
+</head>
+<body>
+    <header>
+        <div id="perfil" class="perfilCerrado">
+            <p id="userAcces"></p>
+            <button id="logoutBtn">Salir</button>
+        </div>
+        <div id="perfil-init" class="itemsAbierto">
+            <a href="#open-registro" id="abrirRegistro">Registrarse</a>
+            <a href="#open-sesion" id="abrirLogin">Iniciar sesión</a>
+        </div>
+    </header>
+
+
+<div class="containt-santa">
+    <img src="img/img-santa.png" alt="" class="img-santa">
+    <h1>Buzón de cartas para Papá Noel</h1>
+    <p>Registrate y escribí tu carta</p>
+</div>
+
+    <div class="container content-registerForm d-none">  
+    <form id="register-form">
+      <a href="#close" id="closedRegister"><img src="img/closed_icon.svg" alt=""></a>
+      <h2>Registro</h2>
+      <input type="email" id="register-email" placeholder="Email" required>
+      <input type="password" id="register-password" placeholder="Password" required>
+      <button type="submit">Registrarse</button>
+    </form>
+    </div>
+
+    <div class="container content-loginForm d-none">
+    <form id="login-form">
+        <a href="#close" id="closedLogin"><img src="img/closed_icon.svg" alt=""></a>
+        <h2>Iniciar sesión</h2>
+        <input type="email" id="login-email" placeholder="Email" required>
+        <input type="password" id="login-password" placeholder="Password" required>
+        <button type="submit">Iniciar Sesión</button>
+    </form>
+    </div>
+
+    <div class="container">
+    <form id="create-message">
+      <h2>¡Escribí tu carta!</h2>
+      <input type="text" id="create-title" placeholder="¿Cómo te llamas?" required>
+      <textarea id="create-content" placeholder="¡Escribile a Papa Noél!" required></textarea>
+      <button type="submit">Entregar carta</button>
+    </form>
+    </div>
+
+    <div class="container">
+        <h2>¡Cartas recibidas!</h2>
+        <div class="menssageChat" id="menssageChat"></div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
