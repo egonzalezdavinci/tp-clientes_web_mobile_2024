@@ -1,28 +1,9 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getFirestore, addDoc, collection, getDocs, doc, setDoc } from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import{db, auth} from './firebase.js';
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyCRttM3UZdrEMtVxs8uBCNOj_2DBs5mXu0",
-  authDomain: "app-clientes-web-tp-2024.firebaseapp.com",
-  projectId: "app-clientes-web-tp-2024",
-  storageBucket: "app-clientes-web-tp-2024.appspot.com",
-  messagingSenderId: "765709702222",
-  appId: "1:765709702222:web:c9f390205d2cda4ebe9f1f",
-  measurementId: "G-XPDE3ML9BG"
-};
+import { addDoc, collection, getDocs, doc, setDoc, query, where } from "firebase/firestore";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const db = getFirestore(app)
-const auth = getAuth(app);
 
 const registerForm = document.getElementById('register-form');
 
@@ -56,7 +37,7 @@ registerForm.addEventListener('submit', async(e) =>{
  
      try{
          await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-        overlayContaint.remove();
+         overlayContaint.remove();
          containBody.style.overflow = '';
          blockLogin.className = 'container content-loginForm d-none';
      } catch (error){
@@ -79,29 +60,33 @@ btnLogout.addEventListener('click', async () => {
     }
   });
 
-  // estado de la sesion
+  // Ver el estado de la sesion
 
   const usuarioLogueado = document.getElementById('perfil');
   const emailUsuarioLogueado = document.getElementById('userAcces');
   const opcionesInicio = document.getElementById('perfil-init');
-
+  const loginCommentCarta = document.getElementById('carta-comment-form');
+  const messageLoginCommentCarta = document.getElementById('messageNoComentar')
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      console.log('usuario logueado: ', user)
       usuarioLogueado.className = 'perfilAbierto';
       opcionesInicio.className = 'itemsCerrado';
       emailUsuarioLogueado.innerHTML = '¡Hola ' + auth.currentUser.email + '!';
       createMessage.style.display = 'flex';
+      loginCommentCarta.style.display = `block`;
+      messageLoginCommentCarta.className = 'd-none';
     } else {
-      console.log('usuario no logueado: ', user)
       usuarioLogueado.className = 'perfilCerrado';
       opcionesInicio.className = 'itemsAbierto';
       createMessage.style.display = 'none';
+      loginCommentCarta.style.display = `none`;
+      messageLoginCommentCarta.className = 'd-block';
     }
   });
 
 
-// Crear publicacion
+
+// Crear Carta
 
 const createMessage = document.getElementById('create-message');
 
@@ -124,25 +109,100 @@ createMessage.addEventListener('submit', async(e) =>{
     console.log('hubo un error al enviar el mensaje', error.message)
   }
 
-})
+});
 
+//Agregar comentario a una carta existente
+
+async function addCommentPost(idUserComment, commentPostCarta){
+
+  try{
+    await addDoc(collection(db, 'Comments'),{
+      commentUser: commentPostCarta,
+      idUser: idUserComment,
+      userName: auth.currentUser.email,
+      timeStamp: new Date(),
+    });
+
+  }catch(error){
+    console.log('error al agregar el comentario: ', error.message)
+  }
+}
 
 // Mostrar publicacion
 
-async function loadPosts(){
+function loadPosts() {
   const menssageChat = document.getElementById('menssageChat');
   menssageChat.innerHTML = '';
 
-  const queryPosts = await getDocs(collection(db, 'Posts'));
-  queryPosts.forEach((doc)=>{
-    const post = doc.data();
-    const postElement = document.createElement('div');
-    postElement.className = 'viewPost';
-    postElement.innerHTML = `<h3>${post.title}</h3><p>"${post.message}"</p><small>${post.user}</small>`;
-    menssageChat.appendChild(postElement);
-  })
+  getDocs(collection(db, 'Posts'))
+      .then((queryPosts) => {
+          queryPosts.forEach((doc) => {
+              const post = doc.data();
+              const postElement = document.createElement('div');
+              postElement.className = 'viewPost';
+
+              postElement.innerHTML = `
+                  <h3>${post.title}</h3>
+                  <p>"${post.message}"</p>
+                  <small>${post.user}</small>
+                  <div>
+                      <p class="miLink" data-id="${doc.id}">Comentar Carta</p>
+                      <p class="miComentario" data-id="${doc.id}">Ver Comentarios</p>
+                  </div>`;
+              menssageChat.appendChild(postElement);
+              
+          });
+
+          // Agregar el evento de clic a los enlaces con la clase "miLink"
+          const miLinks = document.querySelectorAll('.miLink');
+          miLinks.forEach(link => {
+              link.addEventListener('click', function(event) {
+              const idUserComment = link.dataset.id;
+                  openPopup(idUserComment);
+              });
+          });
+
+          const miComentario = document.querySelectorAll('.miComentario');
+          miComentario.forEach(comentario => {
+            comentario.addEventListener('click', function(event) {
+              let idUser = comentario.dataset.id;
+                  openCommentPopUp(idUser);
+              });
+          });
+      })
+      .catch((error) => {
+          console.error("Error al obtener los posts:", error);
+      });
 }
+
 loadPosts();
+
+
+//Consultar los comentarios de las cartas:
+
+async function loadCommentCarta(idUser){
+  const verComentariosContent = document.getElementById('verComentariosDeLaCarta');
+        verComentariosContent.innerHTML = '';
+
+  const q = query(collection(db, 'Comments'), where('idUser', '==', idUser));
+
+  const queryComment = await getDocs(q);
+  if (queryComment.empty){
+    const sinComentarios = document.createElement('div');
+    sinComentarios.className = 'viewPostEmpty';
+    sinComentarios.innerHTML = `<div>Todavía no hay Comentarios</div>`;
+    verComentariosContent.appendChild(sinComentarios);
+  }else{
+  queryComment.forEach((doc) => {
+    const post = doc.data();
+    const mostramosComentarios = document.createElement('div');
+    mostramosComentarios.className = 'viewPost';
+    mostramosComentarios.innerHTML = `<div><small>${post.userName} dijo:</small></div>
+                            <div><p>${post.commentUser}</p></div>`;
+    verComentariosContent.appendChild(mostramosComentarios);
+  });
+}
+}
 
 
 //Abrir modal iniciar sesion
@@ -151,10 +211,14 @@ const linkRegistrarse = document.getElementById('abrirRegistro');
 const linkLogin = document.getElementById('abrirLogin');
 const linkRegistrarseClose = document.getElementById('closedRegister');
 const linkLoginClose = document.getElementById('closedLogin');
+const linkCommentCartaClose = document.getElementById('closedCarta');
+const commentCartaClose = document.getElementById('closedComentarios');
 
 const containBody = document.body;
 const blockRegister = registerForm.parentNode;
 const blockLogin = loginForm.parentNode;
+const blockCommentCart = loginCommentCarta.parentNode;
+const blockCommentview = commentCartaClose.parentNode;
 const overlayContaint = document.createElement('div');
       overlayContaint.className = 'overlay';
 
@@ -181,3 +245,49 @@ linkLoginClose.addEventListener('click', () => {
   blockLogin.className = 'container content-loginForm d-none';
   containBody.style.overflow = '';
 })
+
+linkCommentCartaClose.addEventListener('click', () => {
+  autoCommentCartaClose();
+})
+
+function autoCommentCartaClose(){
+  overlayContaint.remove();
+  blockCommentCart.className = 'container content-commentCarta-Form d-none';
+  containBody.style.overflow = '';
+  }
+
+commentCartaClose.addEventListener('click', () => {
+  overlayContaint.remove();
+  blockCommentview.className = 'container content-commentCarta d-none';
+  containBody.style.overflow = '';
+})
+
+// Función para abrir el popup para comentar
+function openPopup(idUserComment) {
+  
+  const popup = document.getElementById('popup');
+  containBody.style.overflow = 'hidden';
+  containBody.appendChild(overlayContaint);
+  blockCommentCart.className = 'container content-commentCarta-Form d-block';
+
+  loginCommentCarta.addEventListener('submit', async(e) =>{
+    const commentPostCarta = document.getElementById('create-commentCarta').value;
+    e.preventDefault();
+    addCommentPost(idUserComment, commentPostCarta);
+    autoCommentCartaClose();
+    commentPostCarta.value = '';
+  })
+}
+
+// Función para abrir el popup para ver comentarios
+const contentComentariosContent = document.getElementById('contentComentariosDeLaCarta');
+
+function openCommentPopUp(idUser) {
+  console.log(idUser)
+  const popup = document.getElementById('popup');
+  containBody.style.overflow = 'hidden';
+  containBody.appendChild(overlayContaint);
+  contentComentariosContent.className = 'container content-commentCarta d-block';
+  loadCommentCarta(idUser);
+}
+

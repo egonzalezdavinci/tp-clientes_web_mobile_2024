@@ -173,7 +173,8 @@ header #perfil button{
 }
 
 .container h2{
-    color: var(--colorVerdeClaus)
+    color: var(--colorVerdeClaus);
+    font-size: 30px;
 }
 
 .menssageChat{
@@ -209,9 +210,28 @@ header #perfil button{
     color: var(--colorClaus);
 }
 
+#verComentariosDeLaCarta .viewPost{
+    border-bottom: 1px solid #ccc;
+    padding: 5px 0px;
+}
+
+#verComentariosDeLaCarta .viewPostEmpty{
+    border-bottom: 0px solid #ccc;
+    padding: 5px 0px;
+    text-align: center;
+}
+
+#verComentariosDeLaCarta .viewPost small{
+    color: var(--colorClaus);
+}
+
+#verComentariosDeLaCarta .viewPost p{
+    margin: 10px 0;
+}
+
 .overlay{
     background-color: #00000060;
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 100%;
     top:0;
@@ -225,7 +245,7 @@ header #perfil button{
     left: 25%;
     right: 25%;
     z-index: 5;
-    top: 25%;
+    top: 5%;
 }
 
 .content-loginForm{
@@ -234,7 +254,25 @@ header #perfil button{
     left: 25%;
     right: 25%;
     z-index: 5;
-    top: 25%;
+    top: 5%;
+}
+
+.content-commentCarta-Form{
+    position: fixed;
+    width: 400px;
+    min-height: 80px;
+    left: 25%;
+    right: 25%;
+    z-index: 5;
+    top: 5%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 6px;
+}
+
+.content-commentCarta-Form a{
+    display: flex;
+    flex-direction: row-reverse;
 }
 
 #register-form{
@@ -242,11 +280,6 @@ header #perfil button{
     background: #fff;
     padding: 10px 20px;
     border-radius: 8px;
-}
-
-#register-form a{
-    display: flex;
-    flex-direction: row-reverse;
 }
 
 #login-form{
@@ -261,10 +294,56 @@ header #perfil button{
     flex-direction: row-reverse;
 }
 
+#carta-comment-form{
+    display: block;
+    background: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+#carta-comment-form a{
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.content-commentCarta{
+    position: fixed;
+    width: 400px;
+    min-height: 115px;
+    max-height: 70vh;
+    left: 25%;
+    right: 25%;
+    z-index: 5;
+    top: 5%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 6px;
+    overflow-x: auto;
+}
+
 .d-none{
     display: none !important;
 }
 
 .d-block{
     display: block !important;
+}
+
+.miLink{
+    color: var(--colorText) !important;
+    text-decoration: underline !important;
+    cursor: pointer;
+    text-decoration: underline;
+    font-weight: 600 !important;
+}
+
+.miComentario{
+    color: var(--colorText) !important;
+    text-decoration: underline !important;
+    cursor: pointer;
+    font-weight: 600 !important;
+}
+
+button{
+    cursor: pointer;
 }

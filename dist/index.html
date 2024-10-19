@@ -48,6 +48,26 @@
     </form>
     </div>
 
+    <div class="container content-commentCarta-Form d-none">  
+        <a href="#close" id="closedCarta"><img src="img/closed_icon.svg" alt=""></a>
+        <form id="carta-comment-form">
+          <h3>Comentar</h3>
+          <textarea id="create-commentCarta" placeholder="¡Escribe aquí tu comentario!" required></textarea>
+          <button type="submit">Pubilcar</button>
+        </form>
+        <div id="messageNoComentar" class="d-none">
+            <p>Tenés qe iniciar sesion para comentar</p>
+        </div>
+    </div>
+
+    <div id="contentComentariosDeLaCarta" class="container content-commentCarta d-none">
+        <a href="#close" id="closedComentarios"><img src="img/closed_icon.svg" alt=""></a>
+        <div id="verComentariosDeLaCarta">
+            
+        </div>
+    </div>
+
+
     <div class="container">
     <form id="create-message">
       <h2>¡Escribí tu carta!</h2>
@@ -61,6 +81,7 @@
         <h2>¡Cartas recibidas!</h2>
         <div class="menssageChat" id="menssageChat"></div>
     </div>
+    
 
     <script src="main.js"></script>
 </body>
